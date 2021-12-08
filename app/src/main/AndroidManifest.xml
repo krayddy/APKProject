@@ -8,15 +8,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.APKProject">
-        <activity android:name=".MainActivity">
+        android:theme="@style/Theme.APKProject"
+        >
+        <activity android:name=".MainActivity"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
-        <activity android:name=".Login">
+        <activity android:name=".Login"
+            android:noHistory="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,6 +29,10 @@
         <activity
             android:name=".CargoReception"
             android:label="Прием груза" />
+        <activity
+            android:name=".IssuanceMain"
+            android:label="Выдача контейнера"
+            android:noHistory="true"/>
     </application>
 
 </manifest>

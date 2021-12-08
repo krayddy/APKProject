@@ -8,10 +8,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Context context;
     Activity activity;
@@ -21,22 +22,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = this;
         activity = this;
-        ListView listView = findViewById(R.id.main_menu_list);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(context, CargoReception.class);
-                TextView client = (TextView)findViewById(R.id.client_text);
-                TextView container = (TextView)findViewById(R.id.container_text);
-                TextView row = (TextView)findViewById(R.id.row_text);
-                intent.putExtra("client", client.getText());
-                intent.putExtra("container", container.getText());
-                intent.putExtra("row", row.getText());
-                startActivity(intent);
-            }
-        });
+        Button receptionButton = findViewById(R.id.main_menu_reception_button);
+        Button issuanceButton = findViewById(R.id.main_menu_issuance_button);
+        receptionButton.setOnClickListener(this);
+        issuanceButton.setOnClickListener(this);
+    }
 
-        ListViewAdapter listViewAdapter = new ListViewAdapter(activity);
-        listView.setAdapter(listViewAdapter);
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.main_menu_reception_button:
+
+                break;
+            case R.id.main_menu_issuance_button:
+                startActivity(new Intent(this, IssuanceMain.class));
+                break;
+        }
     }
 }
