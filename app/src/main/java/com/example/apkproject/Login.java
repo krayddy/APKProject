@@ -16,7 +16,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     EditText loginEditText, passwordEditText;
     Button signInButton;
 
+    @Override
+    protected void onStart() {
+        overridePendingTransition(0, 0);
+        super.onStart();
+    }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, 0);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

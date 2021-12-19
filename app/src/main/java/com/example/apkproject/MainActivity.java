@@ -16,6 +16,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Context context;
     Activity activity;
+
+    @Override
+    protected void onStart() {
+        overridePendingTransition(0, 0);
+        super.onStart();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, 0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,11 +45,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_menu_reception_button:
-
+                startActivity(new Intent(this, ReceptionMain.class));
                 break;
             case R.id.main_menu_issuance_button:
                 startActivity(new Intent(this, IssuanceMain.class));
                 break;
         }
     }
+
+
 }

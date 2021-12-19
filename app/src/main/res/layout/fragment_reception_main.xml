@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="26dp"
+        android:paddingRight="26dp"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Theme.main_text_theme"
+            android:textSize="24sp"
+            android:layout_marginTop="32dp"
+            android:text="Общая информация"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Номер контейнера"
+            style="@style/Theme.main_text_theme"
+            android:textStyle="normal"
+            android:textSize="18sp"
+            android:layout_marginTop="32dp"/>
+        <EditText
+            android:id="@+id/reception_main_container_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:inputType="textMultiLine"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/transparent_block_frame"
+            android:hint="Введите номер контейнера"
+            android:paddingLeft="13dp"
+            android:paddingRight="13dp"
+            style="@style/Theme.main_text_theme"
+            android:textSize="18sp"
+            android:textStyle="normal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Вид КТК"
+            style="@style/Theme.main_text_theme"
+            android:textStyle="normal"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"/>
+        <EditText
+            android:id="@+id/reception_main_container_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:inputType="textMultiLine"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/transparent_block_frame"
+            android:hint="Выберите вид КТК"
+            android:paddingLeft="13dp"
+            android:paddingRight="13dp"
+            style="@style/Theme.main_text_theme"
+            android:textSize="18sp"
+            android:textStyle="normal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Дата и время получения"
+            style="@style/Theme.main_text_theme"
+            android:textStyle="normal"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp">
+            <EditText
+                android:id="@+id/reception_main_date"
+                android:layout_weight=".9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"
+                android:inputType="textMultiLine"
+                android:background="@drawable/transparent_block_frame"
+                android:hint="ДД.ММ.ГГГГ  ЧЧ:ММ"
+                android:paddingLeft="13dp"
+                android:paddingRight="13dp"
+                style="@style/Theme.main_text_theme"
+                android:textSize="18sp"
+                android:textStyle="normal"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reception_menu_date_pick_button"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/transparent_block_frame"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:paddingLeft="14dp"
+                android:drawableLeft="@drawable/date_pick_button_image"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ФИО водителя"
+            style="@style/Theme.main_text_theme"
+            android:textStyle="normal"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"/>
+        <EditText
+            android:id="@+id/reception_main_driver_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="80dp"
+            android:inputType="textMultiLine"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/transparent_block_frame"
+            android:hint="Введите ФИО водителя"
+            android:gravity="top"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:paddingLeft="13dp"
+            android:paddingRight="13dp"
+            style="@style/Theme.main_text_theme"
+            android:textSize="18sp"
+            android:textStyle="normal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Номер машины"
+            style="@style/Theme.main_text_theme"
+            android:textStyle="normal"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"/>
+        <EditText
+            android:id="@+id/reception_main_car_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:inputType="textMultiLine"
+            android:layout_marginTop="4dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:background="@drawable/transparent_block_frame"
+            android:hint="Введите номер машины"
+            android:paddingLeft="13dp"
+            android:paddingRight="13dp"
+            style="@style/Theme.main_text_theme"
+            android:textSize="18sp"
+            android:textStyle="normal"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="30dp"
+            android:weightSum="100">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reception_menu_back_button"
+                android:layout_weight="50"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_frame_white"
+                android:text="Назад"
+                style="@style/Theme.main_text_theme"
+                android:textStyle="normal"
+                android:textSize="18sp"
+                android:layout_marginRight="10dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reception_menu_next_button"
+                style="@style/Theme.main_text_theme"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:background="@drawable/button_frame"
+                android:text="Далее"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

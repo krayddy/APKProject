@@ -18,7 +18,7 @@ android:layout_height="match_parent">
                     style="@style/Theme.main_text_theme"
                     android:textSize="24sp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="58dp"/>
+                    android:layout_marginTop="32dp"/>
 
 
                 <TextView
@@ -31,7 +31,11 @@ android:layout_height="match_parent">
                     android:layout_marginTop="57dp"/>
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:inputType="textMultiLine"
+                    android:paddingTop="13dp"
+                    android:paddingBottom="13dp"
                     android:layout_marginTop="4dp"
                     android:background="@drawable/transparent_block_frame"
                     android:hint="Введите номер контейнера"
@@ -49,17 +53,35 @@ android:layout_height="match_parent">
                     android:textStyle="normal"
                     android:textSize="18sp"
                     android:layout_marginTop="16dp"/>
-                <EditText
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/transparent_block_frame"
-                    android:hint="ДД.ММ.ГГГГ  ЧЧ:ММ"
-                    android:paddingLeft="13dp"
-                    android:paddingRight="13dp"
-                    style="@style/Theme.main_text_theme"
-                    android:textSize="18sp"
-                    android:textStyle="normal"/>
+                    android:layout_marginTop="4dp">
+                        <EditText
+                            android:layout_weight=".9"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="48dp"
+                            android:paddingTop="13dp"
+                            android:paddingBottom="13dp"
+                            android:inputType="textMultiLine"
+                            android:background="@drawable/transparent_block_frame"
+                            android:hint="ДД.ММ.ГГГГ  ЧЧ:ММ"
+                            android:paddingLeft="13dp"
+                            android:paddingRight="13dp"
+                            style="@style/Theme.main_text_theme"
+                            android:textSize="18sp"
+                            android:textStyle="normal"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/issuance_menu_date_pick_button"
+                            android:layout_width="48dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/transparent_block_frame"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:paddingLeft="14dp"
+                            android:drawableLeft="@drawable/date_pick_button_image"/>
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -71,10 +93,15 @@ android:layout_height="match_parent">
                     android:layout_marginTop="16dp"/>
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="80dp"
+                    android:inputType="textMultiLine"
                     android:layout_marginTop="4dp"
                     android:background="@drawable/transparent_block_frame"
                     android:hint="Введите ФИО водителя"
+                    android:gravity="top"
+                    android:paddingTop="13dp"
+                    android:paddingBottom="13dp"
                     android:paddingLeft="13dp"
                     android:paddingRight="13dp"
                     style="@style/Theme.main_text_theme"
@@ -91,8 +118,12 @@ android:layout_height="match_parent">
                     android:layout_marginTop="16dp"/>
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:inputType="textMultiLine"
                     android:layout_marginTop="4dp"
+                    android:paddingTop="13dp"
+                    android:paddingBottom="13dp"
                     android:background="@drawable/transparent_block_frame"
                     android:hint="Введите номер машины"
                     android:paddingLeft="13dp"

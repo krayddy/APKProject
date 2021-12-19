@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="26dp"
+        android:paddingRight="26dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            style="@style/Theme.main_text_theme"
+            android:textSize="24sp"
+            android:text="Фото внешнего вида контейнера"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            style="@style/Theme.main_text_theme"
+            android:textStyle="normal"
+            android:textSize="18sp"
+            android:text="Фото контейнера слева"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:minHeight="80dp"
+            android:background="@drawable/dotted_block_frame"
+            android:gravity="left"
+            android:padding="5dp"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reception_general_photo_left_add_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:text="Добавить фото"
+                style="@style/Theme.main_text_theme"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:textColor="@color/gray"
+                android:drawableLeft="@drawable/add_photo_button_image"
+                android:drawablePadding="16dp"
+                android:layout_marginLeft="20dp"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
+                android:visibility="visible"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
+                android:id="@+id/reception_general_photo_left_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            style="@style/Theme.main_text_theme"
+            android:textStyle="normal"
+            android:textSize="18sp"
+            android:text="Фото контейнера справа"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:minHeight="80dp"
+            android:orientation="horizontal"
+            android:background="@drawable/dotted_block_frame"
+            android:gravity="left"
+            android:padding="5dp"
+            >
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reception_general_photo_right_add_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:text="Добавить фото"
+                style="@style/Theme.main_text_theme"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:textColor="@color/gray"
+                android:drawableLeft="@drawable/add_photo_button_image"
+                android:drawablePadding="16dp"
+                android:layout_marginLeft="20dp"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
+                android:visibility="visible"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
+                android:id="@+id/reception_general_photo_right_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            style="@style/Theme.main_text_theme"
+            android:textStyle="normal"
+            android:textSize="18sp"
+            android:text="Фото контейнера внутри"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:minHeight="80dp"
+            android:background="@drawable/dotted_block_frame"
+            android:gravity="left"
+            android:padding="5dp"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reception_general_photo_inside_add_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:text="Добавить фото"
+                style="@style/Theme.main_text_theme"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:textColor="@color/gray"
+                android:drawableLeft="@drawable/add_photo_button_image"
+                android:drawablePadding="16dp"
+                android:layout_marginLeft="20dp"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
+                android:visibility="visible"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
+                android:id="@+id/reception_general_photo_inside_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            style="@style/Theme.main_text_theme"
+            android:textStyle="normal"
+            android:textSize="18sp"
+            android:text="Фото дверей контейнера"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:minHeight="80dp"
+            android:background="@drawable/dotted_block_frame"
+            android:gravity="left"
+            android:padding="5dp"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reception_general_photo_doors_add_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:text="Добавить фото"
+                style="@style/Theme.main_text_theme"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:textColor="@color/gray"
+                android:drawableLeft="@drawable/add_photo_button_image"
+                android:drawablePadding="16dp"
+                android:layout_marginLeft="20dp"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
+                android:visibility="visible"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
+                android:id="@+id/reception_general_photo_doors_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="30dp"
+            android:weightSum="100">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reception_general_photo_back_button"
+                android:layout_weight="50"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_frame_white"
+                android:text="Назад"
+                style="@style/Theme.main_text_theme"
+                android:textStyle="normal"
+                android:textSize="18sp"
+                android:layout_marginRight="10dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reception_general_photo_next_button"
+                style="@style/Theme.main_text_theme"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:background="@drawable/button_frame"
+                android:text="Далее к\n дефектам"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

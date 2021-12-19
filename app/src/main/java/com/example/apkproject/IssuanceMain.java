@@ -11,6 +11,18 @@ import androidx.appcompat.app.AppCompatActivity;
 public class IssuanceMain extends AppCompatActivity implements View.OnClickListener {
 
     @Override
+    protected void onStart() {
+        overridePendingTransition(0, 0);
+        super.onStart();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, 0);
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.issuance_main);
