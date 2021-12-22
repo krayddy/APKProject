@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">APKProject</string>
+    <string-array name="container_types">
+        <item>Контейнер 20\'</item>
+        <item>Контейнер 3 т.</item>
+        <item>Контейнер 40\'</item>
+    </string-array>
 </resources>

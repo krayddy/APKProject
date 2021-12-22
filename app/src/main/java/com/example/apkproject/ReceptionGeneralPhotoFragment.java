@@ -61,9 +61,10 @@ public class ReceptionGeneralPhotoFragment extends Fragment implements View.OnCl
                 .putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         orderSavedData = ((ReceptionMain)getActivity()).dataToFragment();
         tempUriList = new ArrayList<>();
+        InitializeVariables();
         InitializeButtons(view);
         InitializeRVs(view);
-        RestoreSavedImagesInRVs(view);
+        SetRVsVisibility(view);
         mainView = view;
         return view;
     }
@@ -83,11 +84,8 @@ public class ReceptionGeneralPhotoFragment extends Fragment implements View.OnCl
         nextButton.setOnClickListener(this);
     }
 
-    private void RestoreSavedImagesInRVs(View view) {
-        imagesFromLeft = orderSavedData.GeneralLeft.size() == 0 ? new ArrayList<>() : orderSavedData.GeneralLeft;
-        imagesFromRight = orderSavedData.GeneralRight.size() == 0 ? new ArrayList<>() : orderSavedData.GeneralRight;
-        imagesInside = orderSavedData.GeneralInside.size() == 0 ? new ArrayList<>() : orderSavedData.GeneralInside;
-        imagesDoors = orderSavedData.GeneralDoors.size() == 0 ? new ArrayList<>() : orderSavedData.GeneralDoors;
+    private void SetRVsVisibility(View view) {
+
         if (imagesFromLeft.size() > 0)
         {
             view.findViewById(R.id.reception_general_photo_left_add_button).setVisibility(View.GONE);
@@ -108,6 +106,13 @@ public class ReceptionGeneralPhotoFragment extends Fragment implements View.OnCl
             view.findViewById(R.id.reception_general_photo_doors_add_button).setVisibility(View.GONE);
             view.findViewById(R.id.reception_general_photo_doors_recyclerview).setVisibility(View.VISIBLE);
         }
+    }
+
+    private void InitializeVariables() {
+        imagesFromLeft = orderSavedData.GeneralLeft.size() == 0 ? new ArrayList<>() : orderSavedData.GeneralLeft;
+        imagesFromRight = orderSavedData.GeneralRight.size() == 0 ? new ArrayList<>() : orderSavedData.GeneralRight;
+        imagesInside = orderSavedData.GeneralInside.size() == 0 ? new ArrayList<>() : orderSavedData.GeneralInside;
+        imagesDoors = orderSavedData.GeneralDoors.size() == 0 ? new ArrayList<>() : orderSavedData.GeneralDoors;
     }
 
     private void InitializeRVs(View view) {
@@ -222,26 +227,31 @@ public class ReceptionGeneralPhotoFragment extends Fragment implements View.OnCl
                 break;
             case R.id.reception_general_photo_next_button:
 
-                orderSavedData.GeneralRight = imagesFromRight;
-                orderSavedData.GeneralLeft = imagesFromLeft;
-                orderSavedData.GeneralInside = imagesInside;
-                orderSavedData.GeneralDoors = imagesDoors;
-
-                dataPasser.onFullDataPass(orderSavedData, "tag");
+                SaveRVsData();
 
                 getActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
                         .addToBackStack("frag2")
-                        .replace(R.id.data_fragment, new ReceptionDataFragment())
+                        .replace(R.id.data_fragment, new ReceptionDeformationFragment())
                         .commit();
                 break;
             case R.id.reception_general_photo_back_button:
+                SaveRVsData();
                 getActivity()
                         .getSupportFragmentManager()
                         .popBackStack();
                 break;
         }
+    }
+
+    private void SaveRVsData() {
+        orderSavedData.GeneralRight = imagesFromRight;
+        orderSavedData.GeneralLeft = imagesFromLeft;
+        orderSavedData.GeneralInside = imagesInside;
+        orderSavedData.GeneralDoors = imagesDoors;
+
+        dataPasser.onFullDataPass(orderSavedData, "tag");
     }
 
     @Override
@@ -265,6 +275,7 @@ public class ReceptionGeneralPhotoFragment extends Fragment implements View.OnCl
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 imagesEncodedList.add(cursor.getString(columnIndex));
+                Log.e("path", cursor.getString(columnIndex));
                 cursor.close();
             }
         }
