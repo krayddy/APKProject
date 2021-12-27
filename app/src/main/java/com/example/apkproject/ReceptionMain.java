@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ReceptionMain extends FragmentActivity implements OnDataPass {

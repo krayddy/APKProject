@@ -2,6 +2,7 @@ package com.example.apkproject;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,6 +49,7 @@ public class ReceptionDataFragment extends Fragment implements View.OnClickListe
         fragment = new ReceptionGeneralPhotoFragment();
         orderData = ((ReceptionMain)getActivity()).dataToFragment();
         ((ReceptionMain) getActivity()).onStringDataPass(null, null);
+
 
         mainView = view;
         return view;

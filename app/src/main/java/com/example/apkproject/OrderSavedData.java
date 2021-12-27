@@ -20,6 +20,9 @@ public class OrderSavedData{
             Deformation6, Deformation7, Damage1, Damage2, Damage3, Damage4, Damage5, Damage6,
             Damage7, Damage8, Damage9, Damage10, Damage11, Damage12, Damage13;
 
+    public ArrayList<ArrayList<Uri>> Deformations;
+    public ArrayList<ArrayList<Uri>> Damages;
+
     public OrderSavedData()
     {
         ContainerNumber = new String();
@@ -51,6 +54,7 @@ public class OrderSavedData{
         Damage11 = new ArrayList<>();
         Damage12 = new ArrayList<>();
         Damage13 = new ArrayList<>();
-
+        Deformations = new ArrayList<ArrayList<Uri>>();
+        Damages = new ArrayList<ArrayList<Uri>>();
     }
 }

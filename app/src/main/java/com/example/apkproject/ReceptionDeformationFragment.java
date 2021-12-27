@@ -216,14 +216,20 @@ public class ReceptionDeformationFragment extends Fragment implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
 
         ArrayList<Uri> imagesUri = new ArrayList<Uri>();
+        ClipData clipData = data.getClipData();
         if (resultCode == RESULT_OK)
         {
-            ClipData clipData = data.getClipData();
-            for (int i = 0; i < clipData.getItemCount(); i++)
+            if (clipData == null)
             {
-                ClipData.Item item = clipData.getItemAt(i);
-                Uri uri = item.getUri();
+                Uri uri = data.getData();
                 imagesUri.add(uri);
+            }
+            else {
+                for (int i = 0; i < clipData.getItemCount(); i++) {
+                    ClipData.Item item = clipData.getItemAt(i);
+                    Uri uri = item.getUri();
+                    imagesUri.add(uri);
+                }
             }
         }
         else

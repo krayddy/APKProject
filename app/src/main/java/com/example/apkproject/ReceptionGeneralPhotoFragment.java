@@ -265,18 +265,17 @@ public class ReceptionGeneralPhotoFragment extends Fragment implements View.OnCl
         {
             ClipData clipData = data.getClipData();
 
-            for (int i = 0; i < clipData.getItemCount(); i++)
+            if (clipData == null)
             {
-                ClipData.Item item = clipData.getItemAt(i);
-                Uri uri = item.getUri();
+                Uri uri = data.getData();
                 imagesUri.add(uri);
-                Cursor cursor = getActivity().getContentResolver()
-                        .query(uri, filePathColumn, null, null, null);
-                cursor.moveToFirst();
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                imagesEncodedList.add(cursor.getString(columnIndex));
-                Log.e("path", cursor.getString(columnIndex));
-                cursor.close();
+            }
+            else {
+                for (int i = 0; i < clipData.getItemCount(); i++) {
+                    ClipData.Item item = clipData.getItemAt(i);
+                    Uri uri = item.getUri();
+                    imagesUri.add(uri);
+                }
             }
         }
         else

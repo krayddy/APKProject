@@ -1,10 +1,21 @@
 package com.example.apkproject;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ClipData;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +26,39 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
 
 public class ReceptionDamageFragment extends Fragment implements View.OnClickListener {
 
+    private Bitmap bitmap;
     //region variables
     View mainView;
     OnDataPass dataPasser;
@@ -60,7 +95,7 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        dataPasser = (OnDataPass)context;
+        dataPasser = (OnDataPass) context;
     }
 
     @Nullable
@@ -71,7 +106,7 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
                 android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI)
                 .setType("image/*")
                 .putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        orderSavedData = ((ReceptionMain)getActivity()).dataToFragment();
+        orderSavedData = ((ReceptionMain) getActivity()).dataToFragment();
         mainView = view;
 
         RestoreImageLists();
@@ -90,18 +125,19 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
 
         ArrayList<Uri> imagesUri = new ArrayList<Uri>();
-        if (resultCode == RESULT_OK)
-        {
+        if (resultCode == RESULT_OK) {
             ClipData clipData = data.getClipData();
-            for (int i = 0; i < clipData.getItemCount(); i++)
-            {
-                ClipData.Item item = clipData.getItemAt(i);
-                Uri uri = item.getUri();
+            if (clipData == null) {
+                Uri uri = data.getData();
                 imagesUri.add(uri);
+            } else {
+                for (int i = 0; i < clipData.getItemCount(); i++) {
+                    ClipData.Item item = clipData.getItemAt(i);
+                    Uri uri = item.getUri();
+                    imagesUri.add(uri);
+                }
             }
-        }
-        else
-        {
+        } else {
             if (tempUriList.size() == 0) {
                 mainView.findViewById(tempButtonId).setVisibility(View.VISIBLE);
                 mainView.findViewById(tempRVId).setVisibility(View.GONE);
@@ -112,92 +148,79 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
     }
 
     private void SetVisibilityBasedOnSavedData() {
-        if (imagesDamage1.size() > 0)
-        {
+        if (imagesDamage1.size() > 0) {
             layoutDamage1.setVisibility(View.VISIBLE);
             rvDamage1.setVisibility(View.VISIBLE);
             addButtonDamage1.setVisibility(View.GONE);
             checkboxDamage1.setChecked(true);
         }
-        if (imagesDamage2.size() > 0)
-        {
+        if (imagesDamage2.size() > 0) {
             layoutDamage2.setVisibility(View.VISIBLE);
             rvDamage2.setVisibility(View.VISIBLE);
             addButtonDamage2.setVisibility(View.GONE);
             checkboxDamage2.setChecked(true);
         }
-        if (imagesDamage3.size() > 0)
-        {
+        if (imagesDamage3.size() > 0) {
             layoutDamage3.setVisibility(View.VISIBLE);
             rvDamage3.setVisibility(View.VISIBLE);
             addButtonDamage3.setVisibility(View.GONE);
             checkboxDamage3.setChecked(true);
         }
-        if (imagesDamage4.size() > 0)
-        {
+        if (imagesDamage4.size() > 0) {
             layoutDamage4.setVisibility(View.VISIBLE);
             rvDamage4.setVisibility(View.VISIBLE);
             addButtonDamage4.setVisibility(View.GONE);
             checkboxDamage4.setChecked(true);
         }
-        if (imagesDamage5.size() > 0)
-        {
+        if (imagesDamage5.size() > 0) {
             layoutDamage5.setVisibility(View.VISIBLE);
             rvDamage5.setVisibility(View.VISIBLE);
             addButtonDamage5.setVisibility(View.GONE);
             checkboxDamage5.setChecked(true);
         }
-        if (imagesDamage6.size() > 0)
-        {
+        if (imagesDamage6.size() > 0) {
             layoutDamage6.setVisibility(View.VISIBLE);
             rvDamage6.setVisibility(View.VISIBLE);
             addButtonDamage6.setVisibility(View.GONE);
             checkboxDamage6.setChecked(true);
         }
-        if (imagesDamage7.size() > 0)
-        {
+        if (imagesDamage7.size() > 0) {
             layoutDamage7.setVisibility(View.VISIBLE);
             rvDamage7.setVisibility(View.VISIBLE);
             addButtonDamage7.setVisibility(View.GONE);
             checkboxDamage7.setChecked(true);
         }
-        if (imagesDamage8.size() > 0)
-        {
+        if (imagesDamage8.size() > 0) {
             layoutDamage8.setVisibility(View.VISIBLE);
             rvDamage8.setVisibility(View.VISIBLE);
             addButtonDamage8.setVisibility(View.GONE);
             checkboxDamage8.setChecked(true);
         }
-        if (imagesDamage9.size() > 0)
-        {
+        if (imagesDamage9.size() > 0) {
             layoutDamage9.setVisibility(View.VISIBLE);
             rvDamage9.setVisibility(View.VISIBLE);
             addButtonDamage9.setVisibility(View.GONE);
             checkboxDamage9.setChecked(true);
         }
-        if (imagesDamage10.size() > 0)
-        {
+        if (imagesDamage10.size() > 0) {
             layoutDamage10.setVisibility(View.VISIBLE);
             rvDamage10.setVisibility(View.VISIBLE);
             addButtonDamage10.setVisibility(View.GONE);
             checkboxDamage10.setChecked(true);
         }
-        if (imagesDamage11.size() > 0)
-        {
+        if (imagesDamage11.size() > 0) {
             layoutDamage11.setVisibility(View.VISIBLE);
             rvDamage11.setVisibility(View.VISIBLE);
             addButtonDamage11.setVisibility(View.GONE);
             checkboxDamage11.setChecked(true);
         }
-        if (imagesDamage12.size() > 0)
-        {
+        if (imagesDamage12.size() > 0) {
             layoutDamage12.setVisibility(View.VISIBLE);
             rvDamage12.setVisibility(View.VISIBLE);
             addButtonDamage12.setVisibility(View.GONE);
             checkboxDamage12.setChecked(true);
         }
-        if (imagesDamage13.size() > 0)
-        {
+        if (imagesDamage13.size() > 0) {
             layoutDamage13.setVisibility(View.VISIBLE);
             rvDamage13.setVisibility(View.VISIBLE);
             addButtonDamage13.setVisibility(View.GONE);
@@ -395,29 +418,23 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
         adapterDamage1.setClickListener(new RecyclerViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (position == imagesDamage1.size())
-                {
+                if (position == imagesDamage1.size()) {
                     TempVariablesAssign(imagesDamage1, adapterDamage1, R.id.damage1_add_button,
                             R.id.damage1_rv, R.id.damage1_checkbox, R.id.damage1_layout);
                     startActivityForResult(photoPickingIntent, 1);
-                }
-                else
-                {
-                    Toast.makeText(getActivity(), "not implemented, 1 clicked", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), new File(imagesDamage1.get(position).getPath()).getName(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
         adapterDamage2.setClickListener(new RecyclerViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (position == imagesDamage2.size())
-                {
+                if (position == imagesDamage2.size()) {
                     TempVariablesAssign(imagesDamage2, adapterDamage2, R.id.damage2_add_button,
                             R.id.damage2_rv, R.id.damage2_checkbox, R.id.damage2_layout);
                     startActivityForResult(photoPickingIntent, 1);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getActivity(), "not implemented, 2 clicked", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -425,14 +442,11 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
         adapterDamage3.setClickListener(new RecyclerViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (position == imagesDamage3.size())
-                {
+                if (position == imagesDamage3.size()) {
                     TempVariablesAssign(imagesDamage3, adapterDamage3, R.id.damage3_add_button,
                             R.id.damage3_rv, R.id.damage3_checkbox, R.id.damage3_layout);
                     startActivityForResult(photoPickingIntent, 1);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getActivity(), "not implemented, 3 clicked", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -440,14 +454,11 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
         adapterDamage4.setClickListener(new RecyclerViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (position == imagesDamage4.size())
-                {
+                if (position == imagesDamage4.size()) {
                     TempVariablesAssign(imagesDamage4, adapterDamage4, R.id.damage4_add_button,
                             R.id.damage4_rv, R.id.damage4_checkbox, R.id.damage4_layout);
                     startActivityForResult(photoPickingIntent, 1);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getActivity(), "not implemented, 4 clicked", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -455,14 +466,11 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
         adapterDamage5.setClickListener(new RecyclerViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (position == imagesDamage5.size())
-                {
+                if (position == imagesDamage5.size()) {
                     TempVariablesAssign(imagesDamage5, adapterDamage5, R.id.damage5_add_button,
                             R.id.damage5_rv, R.id.damage5_checkbox, R.id.damage5_layout);
                     startActivityForResult(photoPickingIntent, 1);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getActivity(), "not implemented, 5 clicked", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -470,14 +478,11 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
         adapterDamage6.setClickListener(new RecyclerViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (position == imagesDamage6.size())
-                {
+                if (position == imagesDamage6.size()) {
                     TempVariablesAssign(imagesDamage6, adapterDamage6, R.id.damage6_add_button,
                             R.id.damage6_rv, R.id.damage6_checkbox, R.id.damage6_layout);
                     startActivityForResult(photoPickingIntent, 1);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getActivity(), "not implemented, 6 clicked", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -485,14 +490,11 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
         adapterDamage7.setClickListener(new RecyclerViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (position == imagesDamage7.size())
-                {
+                if (position == imagesDamage7.size()) {
                     TempVariablesAssign(imagesDamage7, adapterDamage7, R.id.damage7_add_button,
                             R.id.damage7_rv, R.id.damage7_checkbox, R.id.damage7_layout);
                     startActivityForResult(photoPickingIntent, 1);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getActivity(), "not implemented, 7 clicked", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -500,14 +502,11 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
         adapterDamage8.setClickListener(new RecyclerViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (position == imagesDamage8.size())
-                {
+                if (position == imagesDamage8.size()) {
                     TempVariablesAssign(imagesDamage8, adapterDamage8, R.id.damage8_add_button,
                             R.id.damage8_rv, R.id.damage8_checkbox, R.id.damage8_layout);
                     startActivityForResult(photoPickingIntent, 1);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getActivity(), "not implemented, 8 clicked", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -515,14 +514,11 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
         adapterDamage9.setClickListener(new RecyclerViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (position == imagesDamage9.size())
-                {
+                if (position == imagesDamage9.size()) {
                     TempVariablesAssign(imagesDamage9, adapterDamage9, R.id.damage9_add_button,
                             R.id.damage9_rv, R.id.damage9_checkbox, R.id.damage9_layout);
                     startActivityForResult(photoPickingIntent, 1);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getActivity(), "not implemented, 9 clicked", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -530,14 +526,11 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
         adapterDamage10.setClickListener(new RecyclerViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (position == imagesDamage10.size())
-                {
+                if (position == imagesDamage10.size()) {
                     TempVariablesAssign(imagesDamage10, adapterDamage10, R.id.damage10_add_button,
                             R.id.damage10_rv, R.id.damage10_checkbox, R.id.damage10_layout);
                     startActivityForResult(photoPickingIntent, 1);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getActivity(), "not implemented, 10 clicked", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -545,14 +538,11 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
         adapterDamage11.setClickListener(new RecyclerViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (position == imagesDamage11.size())
-                {
+                if (position == imagesDamage11.size()) {
                     TempVariablesAssign(imagesDamage11, adapterDamage11, R.id.damage11_add_button,
                             R.id.damage11_rv, R.id.damage11_checkbox, R.id.damage11_layout);
                     startActivityForResult(photoPickingIntent, 1);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getActivity(), "not implemented, 11 clicked", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -560,14 +550,11 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
         adapterDamage12.setClickListener(new RecyclerViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (position == imagesDamage12.size())
-                {
+                if (position == imagesDamage12.size()) {
                     TempVariablesAssign(imagesDamage12, adapterDamage12, R.id.damage12_add_button,
                             R.id.damage12_rv, R.id.damage12_checkbox, R.id.damage12_layout);
                     startActivityForResult(photoPickingIntent, 1);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getActivity(), "not implemented, 12 clicked", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -575,14 +562,11 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
         adapterDamage13.setClickListener(new RecyclerViewAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (position == imagesDamage13.size())
-                {
+                if (position == imagesDamage13.size()) {
                     TempVariablesAssign(imagesDamage13, adapterDamage13, R.id.damage13_add_button,
                             R.id.damage13_rv, R.id.damage13_checkbox, R.id.damage13_layout);
                     startActivityForResult(photoPickingIntent, 1);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getActivity(), "not implemented, 13 clicked", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -736,7 +720,48 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
                     layoutDamage13.setVisibility(View.GONE);
                 break;
             case R.id.reception_damage_next_button:
-                Toast.makeText(getActivity(), "not implemented, next clicked", Toast.LENGTH_SHORT).show();
+                SaveData();
+
+                orderSavedData = ((ReceptionMain) getActivity()).dataToFragment();
+                ListOfListsForUpload();
+                Log.e("def size", orderSavedData.Deformations.size() + "");
+                Log.e("dam size", orderSavedData.Damages.size() + "");
+                for (int i = 0; i < orderSavedData.GeneralLeft.size(); i++) {
+                    Uri uri = orderSavedData.GeneralLeft.get(i);
+                    uploadTask(uri, "generalLeft"+i);
+                }
+                for (int i = 0; i < orderSavedData.GeneralRight.size(); i++) {
+                    Uri uri = orderSavedData.GeneralRight.get(i);
+                    uploadTask(uri, "generalRight"+i);
+                }
+                for (int i = 0; i < orderSavedData.GeneralDoors.size(); i++) {
+                    Uri uri = orderSavedData.GeneralDoors.get(i);
+                    uploadTask(uri, "generalDoors"+i);
+                }
+                for (int i = 0; i < orderSavedData.GeneralInside.size(); i++) {
+                    Uri uri = orderSavedData.GeneralInside.get(i);
+                    uploadTask(uri, "generalInside"+i);
+                }
+                for (int i = 0; i < orderSavedData.Deformations.size(); i++)
+                {
+                    for (int j = 0; j < orderSavedData.Deformations.get(i).size(); j++)
+                    {
+                        Uri uri = orderSavedData.Deformations.get(i).get(j);
+                        uploadTask(uri, "deformation" + i + "_" + j);
+                    }
+                }
+                for (int i = 0; i < orderSavedData.Damages.size(); i++)
+                {
+                    ArrayList<Uri> temp = orderSavedData.Damages.get(i);
+                    for (int j = 0; j < temp.size(); j++)
+                    {
+                        Uri uri = temp.get(j);
+                        uploadTask(uri, "damage" + i + "_" + j);
+                    }
+                }
+
+                ((ReceptionMain) getActivity()).finish();
+
                 break;
             case R.id.reception_damage_back_button:
                 SaveData();
@@ -746,5 +771,87 @@ public class ReceptionDamageFragment extends Fragment implements View.OnClickLis
                         .popBackStack();
                 break;
         }
+    }
+
+    private void ListOfListsForUpload() {
+        orderSavedData.Deformations.add(orderSavedData.Deformation1);
+        orderSavedData.Deformations.add(orderSavedData.Deformation2);
+        orderSavedData.Deformations.add(orderSavedData.Deformation3);
+        orderSavedData.Deformations.add(orderSavedData.Deformation4);
+        orderSavedData.Deformations.add(orderSavedData.Deformation5);
+        orderSavedData.Deformations.add(orderSavedData.Deformation6);
+        orderSavedData.Deformations.add(orderSavedData.Deformation7);
+        orderSavedData.Damages.add(orderSavedData.Damage1);
+        orderSavedData.Damages.add(orderSavedData.Damage2);
+        orderSavedData.Damages.add(orderSavedData.Damage3);
+        orderSavedData.Damages.add(orderSavedData.Damage4);
+        orderSavedData.Damages.add(orderSavedData.Damage5);
+        orderSavedData.Damages.add(orderSavedData.Damage6);
+        orderSavedData.Damages.add(orderSavedData.Damage7);
+        orderSavedData.Damages.add(orderSavedData.Damage8);
+        orderSavedData.Damages.add(orderSavedData.Damage9);
+        orderSavedData.Damages.add(orderSavedData.Damage10);
+        orderSavedData.Damages.add(orderSavedData.Damage11);
+        orderSavedData.Damages.add(orderSavedData.Damage12);
+        orderSavedData.Damages.add(orderSavedData.Damage13);
+    }
+
+    protected void uploadTask(Uri uri, String imageName) {
+        decodeFile(uri);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+        byte[] data = bos.toByteArray();
+        String file = Base64.encodeToString(data, 0);
+        //Log.e("base64 string", file);
+        new ImageUploadTask(file, imageName).execute();
+    }
+
+    public void decodeFile(Uri uri) {
+        if (Build.VERSION.SDK_INT >= 29) {
+            try (ParcelFileDescriptor pfd = getActivity().getContentResolver().openFileDescriptor(uri, "r")) {
+                if (pfd != null) {
+                    bitmap = BitmapFactory.decodeFileDescriptor(pfd.getFileDescriptor());
+                }
+            } catch (IOException ex) {
+
+            }
+        } else{
+                BitmapFactory.Options o = new BitmapFactory.Options();
+                o.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(getRealPathFromURI(uri), o);
+
+                // The new size we want to scale to
+                final int REQUIRED_SIZE = 1*1024*1024;
+
+                // Find the correct scale value. It should be the power of 2.
+                int width_tmp = o.outWidth, height_tmp = o.outHeight;
+                int scale = 1;
+                while (true) {
+                    if (width_tmp < REQUIRED_SIZE && height_tmp < REQUIRED_SIZE)
+                        break;
+                    width_tmp /= 2;
+                    height_tmp /= 2;
+                    scale *= 2;
+                }
+
+                BitmapFactory.Options o2 = new BitmapFactory.Options();
+                o2.inSampleSize = scale;
+                bitmap = BitmapFactory.decodeFile(getRealPathFromURI(uri), o2);
+            }
+
+    }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
     }
 }
